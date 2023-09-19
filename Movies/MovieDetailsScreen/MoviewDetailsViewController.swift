@@ -41,6 +41,7 @@ class MoviewDetailsViewController: UIViewController {
     func updateMoviewDetails() {
         self.lablelForGenreAndDate.text = moviewDetails.Genre + "  -  " + (moviewDetails.Released ?? "")
         self.moviewName.text = moviewDetails.Title
+        self.summuryLabel.text = moviewDetails.Plot
         DispatchQueue.global(qos: .background).async {
             if let poster = self.moviewDetails.Poster, poster.isNotEmpty() {
                 self.viewModel.getImageData(url:poster)
