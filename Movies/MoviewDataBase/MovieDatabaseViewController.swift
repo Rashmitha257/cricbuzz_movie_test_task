@@ -22,16 +22,8 @@ class MovieDatabaseViewController: UIViewController {
         super.viewDidLoad()
         setupBinder()
         viewModel.getMovieList()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-        
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
     }
 
-    
     //MARK: - Other functions
     
     /// Setting the binder to do functions after listen from observers
