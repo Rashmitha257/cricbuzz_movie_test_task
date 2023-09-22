@@ -46,3 +46,15 @@ class MovieDetailsTableViewCell: UITableViewCell {
         }
     }
 }
+
+//MARK: -
+extension MovieDetailsTableViewCell: TableViewCellProtocol {
+
+    /// Configuring data of a cell with downcasting the data
+    /// - Parameter data: data need to downcast to suitable type
+    func configure(with data: Any) {
+        if let data = data as? MovieDetails {
+            updateCellData(movieData: data)
+        }
+    }
+}

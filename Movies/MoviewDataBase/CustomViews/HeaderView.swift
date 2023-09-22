@@ -9,6 +9,12 @@ import UIKit
 
 protocol ExapandableHeaderViewdelegate {
     func toggeleSection(header: HeaderView, section: Int)
+    func navigateToMoveListScreen()
+}
+
+extension ExapandableHeaderViewdelegate {
+    func toggeleSection(header: HeaderView, section: Int) {}
+    func navigateToMoveListScreen(){}
 }
 
 class HeaderView: UITableViewHeaderFooterView {
@@ -22,6 +28,7 @@ class HeaderView: UITableViewHeaderFooterView {
         }()
         
     var section: Int!
+    var isForAllMoview: Bool = false
     
     //MARK: - Override functions
     override init(reuseIdentifier: String?) {
@@ -60,6 +67,13 @@ class HeaderView: UITableViewHeaderFooterView {
     @objc func selectHeaderAction(gestureRecognizer: UITapGestureRecognizer) {
         let cell = gestureRecognizer.view as! HeaderView
         delegate?.toggeleSection(header: self, section: cell.section)
+        
+//        Uncomment below and comment above to acheive navigating to other screen to see movie list
+//        if isForAllMoview {
+//            delegate?.navigateToMoveListScreen()
+//        } else {
+//            delegate?.toggeleSection(header: self, section: cell.section)
+//        }
     }
     
     /// Setting initial value of a view
@@ -67,10 +81,11 @@ class HeaderView: UITableViewHeaderFooterView {
     ///   - title: Title of the header
     ///   - section: section of header
     ///   - delegate: delegate for call back
-    func customIniit(title: String, section: Int, delegate: ExapandableHeaderViewdelegate) {
+    func customIniit(title: String, section: Int, delegate: ExapandableHeaderViewdelegate, isFromAllMoview: Bool = false) {
         self.textLabel?.text = title
         self.section = section
         self.delegate = delegate
+        self.isForAllMoview = isFromAllMoview
     }
    
 }

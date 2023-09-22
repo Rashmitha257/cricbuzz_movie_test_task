@@ -69,10 +69,7 @@ extension MovieDatabaseViewController: UITableViewDataSource,UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if movieDatabaseList[indexPath.section].expanded {
-            return UITableView.automaticDimension
-        }
-        return 0
+        return  movieDatabaseList[indexPath.section].expanded ? UITableView.automaticDimension : 0
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -81,38 +78,58 @@ extension MovieDatabaseViewController: UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = HeaderView()
-        header.customIniit(title: movieDatabaseList[section].title, section: section, delegate: self)
+        header.customIniit(title: movieDatabaseList[section].title, section: section, delegate: self, isFromAllMoview: section == 4 ? true : false)
         return header
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if movieDatabaseList[indexPath.section].title == "All Movies" {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MovieDetailsTableViewCell", for: indexPath) as! MovieDetailsTableViewCell
-            cell.updateCellData(movieData: movieDatabaseList[indexPath.section].listData[indexPath.row] as! MovieDetails)
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TitleLableCell")!
-            cell.textLabel?.text = movieDatabaseList[indexPath.section].listData[indexPath.row] as? String
-            return cell
+        let cellIdentifier = getCellIdentifier(section: indexPath.section)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        if let configurableCell = cell as? TableViewCellProtocol {
+            let data = movieDatabaseList[indexPath.section].listData[indexPath.row]
+            configurableCell.configure(with: data)
         }
-  
+        return cell
+    }
+    
+    /// Get cell identifire by using section
+    /// - Parameter section: section to get identifier
+    /// - Returns: cell identifier name
+    func getCellIdentifier(section: Int) -> String {
+        switch section {
+        case 4:
+            return moviewDetailsCellIdentifier
+        default:
+            return lableCellIdentifier
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if movieDatabaseList[indexPath.section].title == "All Movies" {
+        if indexPath.section == 4 {
             navigationToMoviewDetailsScreen(moviewData: movieDatabaseList[indexPath.section].listData[indexPath.row] as! MovieDetails)
-        } else {
-            var filteredMoview = [MovieDetails]()
-            if  movieDatabaseList[indexPath.section].title == "Year" {
-                filteredMoview = allMovies.filter({$0.Year.components(separatedBy: "-").contains(movieDatabaseList[indexPath.section].listData[indexPath.row] as! String)})
-            } else if movieDatabaseList[indexPath.section].title == "Genre" {
-                filteredMoview = allMovies.filter({$0.Genre.components(separatedBy: ",").contains(movieDatabaseList[indexPath.section].listData[indexPath.row] as! String)})
-            } else if movieDatabaseList[indexPath.section].title == "Directors" {
-                filteredMoview = allMovies.filter({$0.Director.components(separatedBy: ",").contains(movieDatabaseList[indexPath.section].listData[indexPath.row] as! String)})
-            } else if movieDatabaseList[indexPath.section].title == "Actors" {
-                filteredMoview = allMovies.filter({$0.Actors.components(separatedBy: ",").contains(movieDatabaseList[indexPath.section].listData[indexPath.row] as! String)})
-            }
-            navigateToMoviewListScreen(list: filteredMoview)
+        } else if let filteredMovie = getFilteredList(section: indexPath.section, comparableValue: movieDatabaseList[indexPath.section].listData[indexPath.row] as! String  ) {
+            navigateToMoviewListScreen(list: filteredMovie)
+        }
+    }
+    
+    
+    /// get filter value of moview list depending on requirment by using section value
+    /// - Parameters:
+    ///   - section: section value
+    ///   - comparableValue: string need to compare to get required data vby filtering
+    /// - Returns: Filtered movie list
+    func getFilteredList(section: Int, comparableValue: String ) -> [MovieDetails]? {
+        switch section {
+        case 0:
+            return allMovies.filter({$0.Year.components(separatedBy: "-").contains(comparableValue)})
+        case 1:
+            return allMovies.filter({$0.Genre.components(separatedBy: ",").contains(comparableValue)})
+        case 2:
+            return allMovies.filter({$0.Director.components(separatedBy: ",").contains(comparableValue)}).sorted()
+        case 3:
+            return allMovies.filter({$0.Actors.components(separatedBy: ",").contains(comparableValue)})
+        default:
+            return nil
         }
     }
    
@@ -165,6 +182,11 @@ extension MovieDatabaseViewController: ExapandableHeaderViewdelegate {
             movieDatabaseTableView.reloadRows(at: [IndexPath(row: i, section: section)], with: .automatic)
         }
         movieDatabaseTableView.endUpdates()
+    }
+    
+    /// implented to show movie list screen for all movies
+    func navigateToMoveListScreen() {
+        self.navigateToMoviewListScreen(list: allMovies)
     }
     
 }

@@ -42,7 +42,7 @@
                                 <rect key="frame" x="0.0" y="163" width="393" height="655"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleLableCell" id="k4G-jB-MIO">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleLableCell" id="k4G-jB-MIO" customClass="LableTableViewCell" customModule="Movies" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="k4G-jB-MIO" id="6QV-t8-f1p">
@@ -416,9 +416,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="44" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dTQ-Us-XOe">
-                                <rect key="frame" x="0.0" y="98" width="393" height="655"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiu-Z7-C4I">
+                                <rect key="frame" x="303" y="59" width="80" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2m1-Z9-LcT"/>
+                                    <constraint firstAttribute="width" constant="80" id="5pj-jD-o6S"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Filter">
+                                            <attributes>
+                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="actionOnFilter:" destination="EVh-CB-LMY" eventType="touchUpInside" id="SjN-V6-4Lv"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="44" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dTQ-Us-XOe">
+                                <rect key="frame" x="0.0" y="59" width="393" height="749"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieDetailsTableViewCell" rowHeight="152" id="jSM-dV-kVy" customClass="MovieDetailsTableViewCell" customModule="Movies" customModuleProvider="target">
@@ -486,8 +507,20 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ipX-t3-dca"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dTQ-Us-XOe" firstAttribute="top" secondItem="ipX-t3-dca" secondAttribute="top" id="VNU-Q7-nFu"/>
+                            <constraint firstItem="dTQ-Us-XOe" firstAttribute="trailing" secondItem="ipX-t3-dca" secondAttribute="trailing" id="XlO-jl-bI9"/>
+                            <constraint firstItem="ipX-t3-dca" firstAttribute="trailing" secondItem="jiu-Z7-C4I" secondAttribute="trailing" constant="10" id="diR-oO-SQj"/>
+                            <constraint firstItem="dTQ-Us-XOe" firstAttribute="leading" secondItem="ipX-t3-dca" secondAttribute="leading" id="f57-tN-cDE"/>
+                            <constraint firstItem="jiu-Z7-C4I" firstAttribute="top" secondItem="ipX-t3-dca" secondAttribute="top" id="ilU-ll-rVG"/>
+                            <constraint firstItem="ipX-t3-dca" firstAttribute="bottom" secondItem="dTQ-Us-XOe" secondAttribute="bottom" constant="10" id="nZv-Ha-xmS"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Matched Moview List" leftItemsSupplementBackButton="YES" id="NVl-RF-5OY"/>
+                    <connections>
+                        <outlet property="filterButton" destination="jiu-Z7-C4I" id="gge-KQ-Qiw"/>
+                        <outlet property="movieListTableView" destination="dTQ-Us-XOe" id="EX3-F4-RiP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dUt-5j-Lao" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

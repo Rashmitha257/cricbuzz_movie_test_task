@@ -12,7 +12,15 @@ struct MovieList: Codable {
     var list = [MovieDetails]()
 }
 
-struct MovieDetails: Codable {
+struct MovieDetails: Codable, Comparable {
+    static func == (lhs: MovieDetails, rhs: MovieDetails) -> Bool {
+        lhs.Title == rhs.Title
+    }
+
+    static func < (lhs: MovieDetails, rhs: MovieDetails) -> Bool {
+        lhs.Title > rhs.Title
+    }
+    
     var Title: String = ""
     var Year: String = ""
     var Rated: String?
